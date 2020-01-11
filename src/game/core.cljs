@@ -3,6 +3,7 @@
       [reagent.core :as r]))
 
 (def click-count (r/atom 0))
+(def person-name (r/atom "strenger"))
 ;; -------------------------
 ;; View
 
@@ -14,7 +15,18 @@
                            :on-click #(swap! click-count dec)}]
                   ])
 
-(defn home-page [] ( counter))
+(defn custom-value [value] [:input
+                       {:type "input-box"
+                        :place-holder "Enter text here"
+                        :on-change #(reset! value (-> % .-target .-value))
+                        }])
+
+(defn custom-greeting [] [:div
+                          [:h2 "Hello " @person-name]
+                          [:h2 [custom-value person-name]]
+                          ])
+
+(defn home-page [] (custom-greeting))
 
 ;; -------------------------
 ;; Initialize app
